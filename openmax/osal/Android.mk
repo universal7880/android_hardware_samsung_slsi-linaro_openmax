@@ -167,6 +167,10 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi-linaro/exynos/libion/include \
 	$(TOP)/system/core/libsystem/include/
 
+ifneq ($(strip $(BOARD_EXYNOS_GRALLOC_INCLUDE_DIR)),)
+LOCAL_C_INCLUDES := $(BOARD_EXYNOS_GRALLOC_INCLUDE_DIR) $(LOCAL_C_INCLUDES)
+endif
+
 ifeq ($(BOARD_USE_ANDROID), true)
 LOCAL_SRC_FILES += \
 	Exynos_OSAL_Android.cpp \
