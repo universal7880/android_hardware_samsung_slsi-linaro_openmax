@@ -23,7 +23,10 @@ cc_library_static {
         "media_plugin_headers",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -33,6 +36,7 @@ cc_library_static {
         "hardware/samsung_slsi-linaro/openmax/videocodec/include",
         "hardware/samsung_slsi-linaro/exynos/include",
     ],
+
 }
 
 cc_library_static {
@@ -60,7 +64,10 @@ cc_library_static {
         "media_plugin_headers",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -70,6 +77,7 @@ cc_library_static {
         "hardware/samsung_slsi-linaro/openmax/videocodec/include",
         "hardware/samsung_slsi-linaro/exynos/include",
     ],
+
 }
 
 cc_library_static {
@@ -164,11 +172,13 @@ cc_library_static {
         "libhardware",
         "libhidlbase",
         "libui",
-        "libexynosgraphicbuffer",
         "libion_exynos",
     ] + select(soong_config_variable("openmax", "OMX_USES_EPIC"), {
         "true": ["libepicoperator"],
         default: [],
+    }) + select(soong_config_variable("arm_gralloc", "gralloc_version"), {
+        "none": ["android.hardware.graphics.mapper@2.0"],
+        default: ["libexynosgraphicbuffer"],
     }),
 
     static_libs: [
@@ -176,7 +186,10 @@ cc_library_static {
         "libVendorVideoApi",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -188,4 +201,5 @@ cc_library_static {
         "hardware/samsung_slsi-linaro/graphics/base/libion/include",
         "system/core/libsystem/include",
     ],
+
 }

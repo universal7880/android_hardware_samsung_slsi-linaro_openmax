@@ -51,7 +51,6 @@ cc_library_shared {
         "libhardware",
         "libhidlbase",
         "libui",
-        "libexynosgraphicbuffer",
         "libstagefright_foundation",
         "libexynosv4l2",
         "libion_exynos",
@@ -60,6 +59,9 @@ cc_library_shared {
     ] + select(soong_config_variable("openmax", "OMX_USES_EPIC"), {
         "true": ["libepicoperator"],
         default: [],
+    }) + select(soong_config_variable("arm_gralloc", "gralloc_version"), {
+        "none": ["android.hardware.graphics.mapper@2.0"],
+        default: ["libexynosgraphicbuffer"],
     }),
 
     static_libs: [
@@ -75,7 +77,10 @@ cc_library_shared {
         "media_plugin_headers",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -87,4 +92,5 @@ cc_library_shared {
         "hardware/samsung_slsi-linaro/graphics/base/libion/include",
         "system/core/libsystem/include",
     ],
+
 }

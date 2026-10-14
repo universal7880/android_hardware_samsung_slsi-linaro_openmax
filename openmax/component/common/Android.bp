@@ -10,7 +10,7 @@ cc_library_static {
     ] + select(soong_config_variable("openmax", "EGL_IMAGE_SUPPORT"), {
         "true": ["-DEGL_IMAGE_SUPPORT"],
         default: [],
-   }) + select(soong_config_variable("arm_gralloc", "exynos_s10b_format_align"), {
+    }) + select(soong_config_variable("arm_gralloc", "exynos_s10b_format_align"), {
         any @ flag_val: ["-DS10B_FORMAT_8B_ALIGNMENT=" + flag_val],
         default: [],
     }),
@@ -34,7 +34,10 @@ cc_library_static {
         "media_plugin_headers",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -46,6 +49,7 @@ cc_library_static {
         "hardware/samsung_slsi-linaro/graphics/base/libion/include",
         "system/core/libsystem/include",
     ],
+
 }
 
 cc_library_shared {
@@ -96,7 +100,10 @@ cc_library_shared {
         "media_plugin_headers",
     ],
 
-    include_dirs: [
+    include_dirs: select(soong_config_variable("exynos_legacy", "gralloc_include_dir"), {
+        any @ dir: [dir],
+        default: [],
+    }) + [
         "hardware/samsung_slsi-linaro/openmax/openmax/core",
         "hardware/samsung_slsi-linaro/openmax/openmax/include/exynos",
         "hardware/samsung_slsi-linaro/openmax/openmax/osal",
@@ -108,4 +115,5 @@ cc_library_shared {
         "hardware/samsung_slsi-linaro/graphics/base/libion/include",
         "system/core/libsystem/include",
     ],
+
 }
