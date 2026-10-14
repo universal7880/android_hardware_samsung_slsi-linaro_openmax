@@ -157,7 +157,6 @@ LOCAL_SHARED_LIBRARIES := \
     libhardware \
     libhidlbase \
     libui \
-    libexynosgraphicbuffer \
     libion_exynos
 
 ifeq ($(BOARD_OMX_USES_EPIC), true)
@@ -179,10 +178,18 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi-linaro/exynos/libion/include \
 	$(TOP)/system/core/libsystem/include/
 
+ifneq ($(strip $(BOARD_EXYNOS_GRALLOC_INCLUDE_DIR)),)
+LOCAL_C_INCLUDES := $(BOARD_EXYNOS_GRALLOC_INCLUDE_DIR) $(LOCAL_C_INCLUDES)
+endif
+
 ifeq ($(BOARD_USE_ANDROID), true)
-LOCAL_SRC_FILES += \
-	Exynos_OSAL_Android.cpp \
-	Exynos_OSAL_ImageConverter.cpp
+LOCAL_SRC_FILES += Exynos_OSAL_Android.cpp
+ifeq ($(BOARD_USES_EXYNOS_GRALLOC_VERSION), 0)
+LOCAL_SHARED_LIBRARIES += android.hardware.graphics.mapper@2.0
+else
+LOCAL_SHARED_LIBRARIES += libexynosgraphicbuffer
+endif
+LOCAL_SRC_FILES += Exynos_OSAL_ImageConverter.cpp
 
 LOCAL_STATIC_LIBRARIES += libVendorVideoApi
 
