@@ -855,6 +855,10 @@ OMX_ERRORTYPE Mpeg4CodecUpdateExtraInfo(
         }
     }
 
+    Exynos_OSAL_UpdateColorAspectsToVideoMeta(
+        &pExynosComponent->pExynosPort[INPUT_PORT_INDEX],
+        &pExynosComponent->pExynosPort[OUTPUT_PORT_INDEX], pMeta);
+
 EXIT:
     return ret;
 }
