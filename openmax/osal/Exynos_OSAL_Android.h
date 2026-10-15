@@ -56,6 +56,9 @@ void getColorAspectsPreferFramework(EXYNOS_OMX_VIDEO_COLORASPECTS *pBSCA, EXYNOS
 
 void Exynos_OSAL_GetColorAspectsForBitstream(EXYNOS_OMX_VIDEO_COLORASPECTS *pFWCA, EXYNOS_OMX_VIDEO_COLORASPECTS *pBSCA);
 void Exynos_OSAL_ColorSpaceToColorAspects(int colorSpace, EXYNOS_OMX_VIDEO_COLORASPECTS *colorAspects);
+void Exynos_OSAL_UpdateColorAspectsToVideoMeta(EXYNOS_OMX_BASEPORT *pInputPort,
+                                             EXYNOS_OMX_BASEPORT *pOutputPort,
+                                             OMX_PTR pVideoMeta);
 
 OMX_ERRORTYPE setHDR10PlusInfoForFramework(OMX_COMPONENTTYPE *pOMXComponent, void *pHDRDynamicInfo);
 OMX_ERRORTYPE setHDR10PlusInfoForVendorPath(OMX_COMPONENTTYPE *pOMXComponent, void *pExynosHDR10PlusInfo, void *pHDRDynamicInfo);

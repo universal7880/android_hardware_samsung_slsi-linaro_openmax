@@ -860,6 +860,37 @@ void Exynos_OSAL_GetColorAspectsForBitstream(
     return;
 }
 
+void Exynos_OSAL_UpdateColorAspectsToVideoMeta(
+    EXYNOS_OMX_BASEPORT *pInputPort,
+    EXYNOS_OMX_BASEPORT *pOutputPort,
+    OMX_PTR             pVideoMeta)
+{
+#ifdef GRALLOC_VERSION0
+    ExynosVideoMeta *pMeta = (ExynosVideoMeta *)pVideoMeta;
+    DescribeColorAspectsParams colorInfo;
+
+    if ((pInputPort == NULL) || (pOutputPort == NULL) || (pMeta == NULL))
+        return;
+
+    Exynos_OSAL_Memset(&colorInfo, 0, sizeof(colorInfo));
+    getColorAspectsPreferBitstream(&pInputPort->ColorAspects,
+                                   &pOutputPort->ColorAspects, &colorInfo);
+    ColorUtils::setDefaultCodecColorAspectsIfNeeded(colorInfo.sAspects,
+        pOutputPort->portDefinition.format.video.nFrameWidth,
+        pOutputPort->portDefinition.format.video.nFrameHeight);
+
+    pMeta->sColorAspects.mRange        = colorInfo.sAspects.mRange;
+    pMeta->sColorAspects.mPrimaries    = colorInfo.sAspects.mPrimaries;
+    pMeta->sColorAspects.mTransfer     = colorInfo.sAspects.mTransfer;
+    pMeta->sColorAspects.mMatrixCoeffs = colorInfo.sAspects.mMatrixCoeffs;
+    pMeta->eType = (ExynosVideoInfoType)(pMeta->eType | VIDEO_INFO_TYPE_COLOR_ASPECTS);
+#else
+    (void)pInputPort;
+    (void)pOutputPort;
+    (void)pVideoMeta;
+#endif
+}
+
 void Exynos_OSAL_UpdateDataSpaceFromBitstream(EXYNOS_OMX_BASECOMPONENT *pExynosComponent) {
     OMX_ERRORTYPE               ret                 = OMX_ErrorNone;
     EXYNOS_OMX_BASEPORT        *pInputPort          = NULL;
