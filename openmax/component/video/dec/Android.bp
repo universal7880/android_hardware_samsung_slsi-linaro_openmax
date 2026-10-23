@@ -21,6 +21,12 @@ cc_library_static {
     }) + select(soong_config_variable("openmax", "USE_COMPRESSED_COLOR"), {
         "true": ["-DUSE_COMPRESSED_COLOR"],
         default: [],
+    }) + select(soong_config_variable("openmax", "GRALLOC_VERSION0"), {
+        "true": ["-DGRALLOC_VERSION0"],
+        default: [],
+    }) + select(soong_config_variable("arm_gralloc", "gralloc_version"), {
+        "none": ["-DGRALLOC_VERSION0"],
+        default: [],
     }) + select(soong_config_variable("arm_gralloc", "exynos_s10b_format_align"), {
         any @ flag_val: ["-DS10B_FORMAT_8B_ALIGNMENT=" + flag_val],
         default: [],
